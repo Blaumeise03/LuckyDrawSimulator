@@ -1,6 +1,6 @@
 import random
 
-# All items of the Lucky Draw
+# All items of the Lucky Draw. Must not contain duplicate names!
 items = [
     "Cloud AI",
     "300k SP",
