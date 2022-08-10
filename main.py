@@ -16,14 +16,17 @@ items = [
     "Large Core"
 ]
 
-# The weights of all the items
+# The weights of all the items, must have the same length as 'items'
 weights = [8, 8, 10, 2, 8, 8, 8, 3, 8, 8, 8, 1]
-
-# Contains how often each item was drawn during each round
-res = None  # type: list[dict] | None
 
 # Unused, saves the cost of each round
 costs = [4, 6, 8, 12, 14, 16, 18, 24, 26, 28, 30, 36]
+
+# The amount of simulations to perform
+SIMULATIONS = 1000000
+
+# Contains how often each item was drawn during each round
+res = None  # type: list[dict] | None
 
 
 def setup():
@@ -33,7 +36,7 @@ def setup():
     counter = {}
     for item in items:
         counter[item] = 0
-    for j in range(12):
+    for j in range(len(items)):
         res.insert(j, counter.copy())
 
 
@@ -42,7 +45,7 @@ def sim_rolls():
     # Creates a copy to modify the weights after each draw
     wheel = weights.copy()
     # Simulate the lucky wheel drawings
-    for j in range(12):
+    for j in range(len(items)):
         # Gets the next item
         rand = random.choices(items, wheel)[0]
         # Sets the weight of this item to zero as it can't be drawn again
@@ -53,8 +56,8 @@ def sim_rolls():
 
 if __name__ == '__main__':
     setup()
-    i = 1
-    while i < 1000001:
+    i = 0
+    while i < SIMULATIONS:
         sim_rolls()
         i += 1
     # Formats results, so it can be pasted into a worksheet
@@ -64,7 +67,7 @@ if __name__ == '__main__':
         line += f"{key}	"
     print(line)
     # Body lines
-    for k in range(12):
+    for k in range(len(items)):
         line = f"{k + 1}	"
         for value in res[k].values():
             line += f"{value}	"
